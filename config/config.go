@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"github.com/astaxie/beego/cache"
 	"github.com/astaxie/beego/config"
 	"github.com/freelifer/coolgo/utils"
 	"os"
@@ -9,6 +10,7 @@ import (
 )
 
 var Config config.Configer
+var Cache cache.Cache
 
 func init() {
 	var err error
@@ -34,6 +36,11 @@ func init() {
 	appName := Config.String("app")
 
 	fmt.Println("appName", appName)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	Cache, err = cache.NewCache("memory", `{"interval":60}`)
 	if err != nil {
 		panic(err.Error())
 	}
