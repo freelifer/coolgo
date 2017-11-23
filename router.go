@@ -10,6 +10,7 @@ func initRouter() *gin.Engine {
 
 	router.GET("/ping", Ping)
 	router.GET("/WXLogin", WXLogin)
+	router.GET("/Tb", Tb)
 
 	return router
 }
