@@ -8,6 +8,7 @@ import (
 func initRouter() *gin.Engine {
 	router := gin.Default()
 
+	router.GET("/", HelloWorld)
 	router.GET("/ping", Ping)
 	router.GET("/WXLogin", WXLogin)
 	router.GET("/Tb", Tb)

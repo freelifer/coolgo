@@ -11,6 +11,10 @@ import (
 	"time"
 )
 
+func HelloWorld(c *gin.Context) {
+	c.String(http.StatusOK, "Hello World!")
+}
+
 func Ping(c *gin.Context) {
 	sessionid := c.Query("sessionid")
 	res := config.Cache.Get(sessionid)

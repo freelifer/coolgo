@@ -28,10 +28,13 @@ const (
 //    "tb_cat_ids":""
 //  },
 // mm_128081258_39714707_150048462
-func TbkCoupon() (string, error) {
+func TbkCoupon(page_size, page_no string) (string, error) {
 	tbs := NewTbService()
 	tbs.putPublicData("taobao.tbk.dg.item.coupon.get", "24659164", "")
 	tbs.putPrivateData("adzone_id", "148758292")
+	tbs.putPrivateData("platform", "2")
+	tbs.putPrivateData("page_size", page_size)
+	tbs.putPrivateData("page_no", page_no)
 	tbs.signTopRequest("cbe2b136be37cd2b66fd4490b8fbfb94", SIGN_METHOD_HMAC)
 
 	// s := fmt.Sprintf("https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code",
