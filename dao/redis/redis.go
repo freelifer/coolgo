@@ -10,7 +10,7 @@ var EXPIRE_TIME int = 1 * 24 * 60 * 60
 func NewRedisConn() error {
 	var err error
 	c, err = redis.Dial("tcp", "localhost:6379")
-	defer c.Close()
+	// defer c.Close()
 
 	return err
 }
@@ -24,13 +24,13 @@ func GetSession(sessionId string) (string, error) {
 }
 
 func PutSession(sessionId, value string) error {
-	_, err = c.Do("SET", sessionId, value, "EX", EXPIRE_TIME)
+	_, err := c.Do("SET", sessionId, value, "EX", EXPIRE_TIME)
 	return err
 }
 
 func Set(key, value string) error {
 	// _, err = c.Do("SET", "password", "123456", "EX", "10")
-	_, err := c.Do("SET", "mykey", "superWang")
+	_, err := c.Do("SET", key, value)
 	return err
 }
 

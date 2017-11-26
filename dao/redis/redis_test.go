@@ -4,11 +4,19 @@ import (
 	"testing"
 )
 
-func Test_init(t *testing.T) {
+func Test_NewRedisConn(t *testing.T) {
+	// err := NewRedisConn()
 
+	// if err != nil {
+	// 	t.Error(err)
+	// } else {
+	// 	t.Log("NewRedisConn 通过")
+	// }
 }
 
 func Test_Set(t *testing.T) {
+
+	NewRedisConn()
 	err := Set("key", "value")
 
 	if err != nil {
