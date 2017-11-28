@@ -24,3 +24,9 @@ func Tb(c *gin.Context) {
 	redis.Set(key, resp)
 	c.String(http.StatusOK, resp)
 }
+
+func Tbwd(c *gin.Context) {
+	resp, _ := service.Tbktpwd("")
+	redis.Set(key, resp)
+	c.String(http.StatusOK, resp)
+}

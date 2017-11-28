@@ -5,11 +5,19 @@ import (
 )
 
 func Test_TbkCoupon(t *testing.T) {
-	body, _ := TbkCoupon()
+	body, _ := TbkCoupon("0", "0")
 
 	t.Log(body)
 }
 
+func Test_Tbktpwd(t *testing.T) {
+	body, _ := Tbktpwd("红心剃毛机剃毛球修剪器充电式吸刮毛器衣服除毛球器去球机打毛器",
+		"https://uland.taobao.com/coupon/edetail?e=QrweHOsuj2sGQASttHIRqa59KcrVlGwiINX7EmZ0YliAnVXUwZx8IhEJwQnkdjDZ7aNoMgWMAfl%2FJ9rOMHOUiMPWjN00SJO8DfqEFBOhTcyABFd8ZHrxxMbGHnPVW3ogxXxVCXdmdxYzhukA9d4NUmPfrr0N2WBeCqEIqV4SxV7k92%2BM7h46c6J7%2BkHL3AEW&traceId=0ab013ac15116183416294882e",
+		"http://img.alicdn.com/tfscom/i2/1048721401/TB1d1S4b4PI8KJjSspfXXcCFXXa_!!0-item_pic.jpg")
+
+	t.Log(body)
+
+}
 func Test_buildPublicData(t *testing.T) {
 	tb := NewTbService()
 	tb.putPublicData("taobao.tbk.item.get", "123456", "abcdefg")

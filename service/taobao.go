@@ -50,6 +50,27 @@ func TbkCoupon(page_size, page_no string) (string, error) {
 	return string(body), nil
 }
 
+func Tbktpwd(text, url, logo_url string) (string, error) {
+	tbs := NewTbService()
+	tbs.putPublicData("taobao.tbk.tpwd.create", "24659164", "")
+	tbs.putPrivateData("text", text)
+	tbs.putPrivateData("url", url)
+	tbs.putPrivateData("logo", logo_url)
+	tbs.signTopRequest("cbe2b136be37cd2b66fd4490b8fbfb94", SIGN_METHOD_HMAC)
+
+	// s := fmt.Sprintf("https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code",
+	// "wxcb7e15ce8102e6d3", "5852a3a293252fe02d2b83dbc3f8ec36", "code")
+	// s := fmt.Sprintf("http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json&ip=%s", "218.4.255.255")
+	resp, err := http.Get(tbs.createUrl())
+	if err != nil {
+		return "a", err
+	}
+	defer resp.Body.Close()
+	body, _ := ioutil.ReadAll(resp.Body)
+
+	return string(body), nil
+}
+
 // TbService Object and Method
 
 type TbService struct {
