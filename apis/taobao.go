@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-func Tb(c *gin.Context) {
+func TbkCoupon(c *gin.Context) {
 	page_size := c.DefaultQuery("page_size", "")
 	page_no := c.DefaultQuery("page_no", "")
 
@@ -21,12 +21,22 @@ func Tb(c *gin.Context) {
 		return
 	}
 	resp, _ := service.TbkCoupon(page_size, page_no)
-	redis.Set(key, resp)
+	redis.PutCoupons(key, resp)
 	c.String(http.StatusOK, resp)
 }
 
-func Tbwd(c *gin.Context) {
-	resp, _ := service.Tbktpwd("")
-	redis.Set(key, resp)
+func Tbktpwd(c *gin.Context) {
+	resp, _ := service.Tbktpwd("", "", "")
+	c.String(http.StatusOK, resp)
+}
+
+func TbkItemInfo(c *gin.Context) {
+	num_iids := c.DefaultQuery("num_iids", "")
+	resp, _ := service.TbkItemInfo(num_iids)
+	c.String(http.StatusOK, resp)
+}
+
+func TbkShopGet(c *gin.Context) {
+	resp, _ := service.TbkShopGet()
 	c.String(http.StatusOK, resp)
 }

@@ -6,6 +6,7 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"fmt"
+	"github.com/freelifer/coolgo/config"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -19,6 +20,10 @@ const (
 	SIGN_METHOD_HMAC string = "hmac"
 )
 
+var adzone_id string = config.Config.String("taobao::adzone_id")
+var app_key string = config.Config.String("taobao::app_key")
+var app_secret string = config.Config.String("taobao::app_secret")
+
 // "Taobao_Config": {
 //    "tb_app_key":"24659164",
 //    "tb_app_secret":"cbe2b136be37cd2b66fd4490b8fbfb94",
@@ -30,16 +35,12 @@ const (
 // mm_128081258_39714707_150048462
 func TbkCoupon(page_size, page_no string) (string, error) {
 	tbs := NewTbService()
-	tbs.putPublicData("taobao.tbk.dg.item.coupon.get", "24659164", "")
-	tbs.putPrivateData("adzone_id", "148758292")
+	tbs.putPublicData("taobao.tbk.dg.item.coupon.get", "")
+	tbs.putPrivateData("adzone_id", adzone_id)
 	tbs.putPrivateData("platform", "2")
 	tbs.putPrivateData("page_size", page_size)
 	tbs.putPrivateData("page_no", page_no)
-	tbs.signTopRequest("cbe2b136be37cd2b66fd4490b8fbfb94", SIGN_METHOD_HMAC)
 
-	// s := fmt.Sprintf("https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code",
-	// "wxcb7e15ce8102e6d3", "5852a3a293252fe02d2b83dbc3f8ec36", "code")
-	// s := fmt.Sprintf("http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json&ip=%s", "218.4.255.255")
 	resp, err := http.Get(tbs.createUrl())
 	if err != nil {
 		return "a", err
@@ -52,16 +53,57 @@ func TbkCoupon(page_size, page_no string) (string, error) {
 
 func Tbktpwd(text, url, logo_url string) (string, error) {
 	tbs := NewTbService()
-	tbs.putPublicData("taobao.tbk.tpwd.create", "24659164", "")
+	tbs.putPublicData("taobao.tbk.tpwd.create", "")
 	tbs.putPrivateData("text", text)
 	tbs.putPrivateData("url", url)
 	tbs.putPrivateData("logo", logo_url)
-	tbs.signTopRequest("cbe2b136be37cd2b66fd4490b8fbfb94", SIGN_METHOD_HMAC)
 
-	// s := fmt.Sprintf("https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code",
-	// "wxcb7e15ce8102e6d3", "5852a3a293252fe02d2b83dbc3f8ec36", "code")
-	// s := fmt.Sprintf("http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json&ip=%s", "218.4.255.255")
 	resp, err := http.Get(tbs.createUrl())
+	if err != nil {
+		return "a", err
+	}
+	defer resp.Body.Close()
+	body, _ := ioutil.ReadAll(resp.Body)
+
+	return string(body), nil
+}
+
+func TbkItemInfo(num_iids string) (string, error) {
+	tbs := NewTbService()
+	tbs.putPublicData("taobao.tbk.item.info.get", "")
+	tbs.putPrivateData("fields", "num_iid,title,pict_url,small_images,reserve_price,zk_final_price,user_type,provcity,item_url,seller_id,volume,nick,seller_credit_score, service_score")
+	// num_iid,title,pict_url,small_images,reserve_price,zk_final_price,user_type,provcity,item_url
+	tbs.putPrivateData("platform", "2")
+	tbs.putPrivateData("num_iids", num_iids)
+
+	resp, err := http.Get(tbs.createUrl())
+	if err != nil {
+		return "a", err
+	}
+	defer resp.Body.Close()
+	body, _ := ioutil.ReadAll(resp.Body)
+
+	return string(body), nil
+}
+
+func TbkShopGet() (string, error) {
+	tbs := NewTbService()
+	tbs.putPublicData("taobao.shop.get", "")
+	tbs.putPrivateData("fields", "sid,cid,title,nick,desc,bulletin,pic_path,created,modified")
+	tbs.putPrivateData("nick", "斯普丽家纺旗舰店")
+
+	resp, err := http.Get(tbs.createUrl())
+	if err != nil {
+		return "a", err
+	}
+	defer resp.Body.Close()
+	body, _ := ioutil.ReadAll(resp.Body)
+
+	return string(body), nil
+}
+
+func Baidu() (string, error) {
+	resp, err := http.Get("http://www.baidu.com")
 	if err != nil {
 		return "a", err
 	}
@@ -83,7 +125,7 @@ func NewTbService() *TbService {
 	return &tbService
 }
 
-func (this *TbService) putPublicData(method string, app_key string, session string) {
+func (this *TbService) putPublicData(method string, session string) {
 	this.table["method"] = method
 	this.table["app_key"] = app_key
 	this.putPrivateData("session", session)
@@ -99,7 +141,9 @@ func (this *TbService) putPrivateData(key, value string) {
 	}
 }
 
-func (this *TbService) signTopRequest(secret string, signMethod string) {
+func (this *TbService) signTopRequest() {
+	secret := app_secret
+	signMethod := SIGN_METHOD_HMAC
 	// 第一步：检查参数是否已经排序
 	keys := make([]string, len(this.table))
 	i := 0
@@ -136,6 +180,9 @@ func (this *TbService) signTopRequest(secret string, signMethod string) {
 }
 
 func (this *TbService) createUrl() string {
+	// add sign
+	this.signTopRequest()
+
 	var buffer bytes.Buffer
 	buffer.WriteString("http://gw.api.taobao.com/router/rest?")
 	i := 0

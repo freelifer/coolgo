@@ -3,12 +3,10 @@ package apis
 import (
 	"fmt"
 	"github.com/bitly/go-simplejson"
-	"github.com/freelifer/coolgo/config"
 	"github.com/freelifer/coolgo/utils"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"net/http"
-	"time"
 )
 
 func HelloWorld(c *gin.Context) {
@@ -16,9 +14,7 @@ func HelloWorld(c *gin.Context) {
 }
 
 func Ping(c *gin.Context) {
-	sessionid := c.Query("sessionid")
-	res := config.Cache.Get(sessionid)
-	c.JSON(http.StatusOK, res)
+	c.String(http.StatusOK, "Hello World!")
 }
 
 func WXLogin(c *gin.Context) {
@@ -58,13 +54,13 @@ func WXLogin(c *gin.Context) {
 	}
 
 	sessionid := utils.NewSessionID()
-	session_key := js.Get("session_key").MustString()
-	unionid := js.Get("unionid").MustString()
-	config.Cache.Put(sessionid, gin.H{
-		"session_key": session_key,
-		"unionid":     unionid,
-		"openid":      openid,
-	}, 20*time.Second)
+	// session_key := js.Get("session_key").MustString()
+	// unionid := js.Get("unionid").MustString()
+	// config.Cache.Put(sessionid, gin.H{
+	// 	"session_key": session_key,
+	// 	"unionid":     unionid,
+	// 	"openid":      openid,
+	// }, 20*time.Second)
 	// c.String(http.StatusOK, string(body))
 	c.JSON(http.StatusOK, gin.H{
 		"errcode": 0,
