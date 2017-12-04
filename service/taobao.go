@@ -33,11 +33,13 @@ var app_secret string = config.Config.String("taobao::app_secret")
 //    "tb_cat_ids":""
 //  },
 // mm_128081258_39714707_150048462
-func TbkCoupon(page_size, page_no string) (string, error) {
+func TbkCoupon(cat, q, page_size, page_no string) (string, error) {
 	tbs := NewTbService()
 	tbs.putPublicData("taobao.tbk.dg.item.coupon.get", "")
 	tbs.putPrivateData("adzone_id", adzone_id)
 	tbs.putPrivateData("platform", "2")
+	tbs.putPrivateData("cat", cat)
+	tbs.putPrivateData("q", q)
 	tbs.putPrivateData("page_size", page_size)
 	tbs.putPrivateData("page_no", page_no)
 

@@ -9,6 +9,9 @@ import (
 
 // GOOS=linux GOARCH=amd64 go build -o coolgo_linux github.com/freelifer/coolgo/*.go
 // GOOS=windows GOARCH=amd64 go build -o coolgo_win github.com/freelifer/coolgo/*.go
+
+// GOOS=linux GOARCH=amd64 go build -o coolgo_linux *.go
+// GOOS=windows GOARCH=amd64 go build -o coolgo_win *.go
 func main() {
 	redis_status, _ := config.Config.Bool("app::redis_status")
 	// redis init

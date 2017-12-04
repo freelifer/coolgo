@@ -10,7 +10,8 @@ import (
 )
 
 func HelloWorld(c *gin.Context) {
-	c.String(http.StatusOK, "Hello World!")
+	code := c.Query("q")
+	c.String(http.StatusOK, code)
 }
 
 func Ping(c *gin.Context) {
