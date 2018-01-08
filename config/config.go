@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"github.com/astaxie/beego/config"
 	"github.com/freelifer/coolgo/utils"
 	"os"
@@ -19,6 +20,7 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
+	fmt.Println("Current dir", workPath)
 	var appConfigPath = filepath.Join(workPath, "conf", "app.conf")
 	if !utils.FileExists(appConfigPath) {
 		appConfigPath = filepath.Join(AppPath, "conf", "app.conf")
@@ -31,4 +33,11 @@ func init() {
 	if err != nil {
 		panic(err.Error())
 	}
+}
+
+func String(key string) string {
+	if Config != nil {
+		return Config.String(key)
+	}
+	return ""
 }

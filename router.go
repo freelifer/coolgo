@@ -11,10 +11,14 @@ func initRouter() *gin.Engine {
 	router.GET("/", HelloWorld)
 	router.GET("/ping", Ping)
 	router.GET("/WXLogin", WXLogin)
-	router.GET("/tb/coupons", TbkCoupon)
-	router.GET("/tb/tpwd", Tbktpwd)
-	router.GET("/tb/item_info", TbkItemInfo)
-	router.GET("/tb/shop_get", TbkShopGet)
+
+	v1 := router.Group("/v1")
+	{
+		v1.GET("/tb/coupons", TbkCoupon)
+		v1.GET("/tb/tpwd", Tbktpwd)
+		v1.GET("/tb/item_info", TbkItemInfo)
+		v1.GET("/tb/shop_get", TbkShopGet)
+	}
 
 	return router
 }

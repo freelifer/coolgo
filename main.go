@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/freelifer/coolgo/config"
+	_ "github.com/freelifer/coolgo/dao/db"
 	"github.com/freelifer/coolgo/dao/redis"
 	"log"
 	"os"
@@ -12,6 +13,8 @@ import (
 
 // GOOS=linux GOARCH=amd64 go build -o coolgo_linux *.go
 // GOOS=windows GOARCH=amd64 go build -o coolgo_win *.go
+
+//go test -bench=WeiXinLogin github.com/freelifer/coolgo/service
 func main() {
 	redis_status, _ := config.Config.Bool("app::redis_status")
 	// redis init
