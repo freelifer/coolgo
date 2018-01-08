@@ -12,6 +12,9 @@ func initRouter() *gin.Engine {
 	router.GET("/ping", Ping)
 	router.GET("/WXLogin", WXLogin)
 
+	// release
+	router.GET("/wx/login", WeiXinLogin)
+
 	v1 := router.Group("/v1")
 	{
 		v1.GET("/tb/coupons", TbkCoupon)
