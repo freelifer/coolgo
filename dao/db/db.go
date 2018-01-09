@@ -1,30 +1,26 @@
 package db
 
 import (
-	"github.com/astaxie/beego/orm"
 	"github.com/freelifer/coolgo/config"
 	"github.com/freelifer/coolgo/dao"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/go-xorm/xorm"
 	_ "github.com/mattn/go-sqlite3"
 )
 
 var dbDriver string
+var engine *xorm.Engine
 
 func init() {
-	orm.Debug = true
-	dbDriver := config.Config.String("app::db")
+	dbDriver := config.String("app::db")
 	if "sqlite3" == dbDriver {
-		orm.RegisterDriver("sqlite3", orm.DRSqlite)
-		orm.RegisterDataBase("default", "sqlite3", "data.db")
+		engine, _ = xorm.NewEngine("sqlite3", "./data.db")
 	} else {
-		orm.RegisterDriver("mysql", orm.DRMySQL)
-		orm.RegisterDataBase("default", "mysql", "root:root@/orm_test?charset=utf8")
+		engine, _ = xorm.NewEngine("mysql", "root:123@/test?charset=utf8")
 	}
 
-	orm.RegisterModel(new(dao.User))
-	orm.RegisterModel(new(dao.Role))
-	orm.RegisterModel(new(dao.Permission))
-	orm.RegisterModel(new(dao.Bill))
+	// engine.Logger().SetLevel(core.LOG_DEBUG)
+	engine.ShowSQL(true)
 
-	orm.RunSyncdb("default", false, true)
+	engine.Sync2(new(dao.User), new(dao.Role), new(dao.Permission), new(dao.Bill))
 }

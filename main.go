@@ -8,6 +8,16 @@ import (
 	"os"
 )
 
+// glide mirror set https://golang.org/x/mobile https://github.com/golang/mobile --vcs git
+// glide mirror set https://golang.org/x/crypto https://github.com/golang/crypto --vcs git
+// glide mirror set https://golang.org/x/net https://github.com/golang/net --vcs git
+// glide mirror set https://golang.org/x/tools https://github.com/golang/tools --vcs git
+// glide mirror set https://golang.org/x/text https://github.com/golang/text --vcs git
+// glide mirror set https://golang.org/x/image https://github.com/golang/image --vcs git
+// glide mirror set https://golang.org/x/sys https://github.com/golang/sys --vcs git
+// glide mirror set https://golang.org/x/net/context https://github.com/golang/net/context --vcs git
+// glide mirror set golang.org/x/net/context github.com/golang/net/context --vcs git
+
 // GOOS=linux GOARCH=amd64 go build -o coolgo_linux github.com/freelifer/coolgo/*.go
 // GOOS=windows GOARCH=amd64 go build -o coolgo_win github.com/freelifer/coolgo/*.go
 
@@ -16,7 +26,7 @@ import (
 
 //go test -bench=WeiXinLogin github.com/freelifer/coolgo/service
 func main() {
-	redis_status, _ := config.Config.Bool("app::redis_status")
+	redis_status := config.Bool("app::redis_status")
 	// redis init
 	err := redis.NewRedisConn(redis_status)
 	if err != nil {

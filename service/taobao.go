@@ -20,9 +20,9 @@ const (
 	SIGN_METHOD_HMAC string = "hmac"
 )
 
-var adzone_id string = config.Config.String("taobao::adzone_id")
-var app_key string = config.Config.String("taobao::app_key")
-var app_secret string = config.Config.String("taobao::app_secret")
+var adzone_id string = config.String("taobao::adzone_id")
+var app_key string = config.String("taobao::app_key")
+var app_secret string = config.String("taobao::app_secret")
 
 // "Taobao_Config": {
 //    "tb_app_key":"24659164",

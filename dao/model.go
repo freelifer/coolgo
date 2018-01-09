@@ -4,7 +4,7 @@ import ()
 
 /* 用户 */
 type User struct {
-	Id       int
+	Id       int64
 	Nickname string
 	Password string
 	WxOpenid string
@@ -13,20 +13,20 @@ type User struct {
 
 /* 角色 */
 type Role struct {
-	Id   int
+	Id   int64
 	Name string
 	Desc string
 }
 
 /* 权限 */
 type Permission struct {
-	Id   int
+	Id   int64
 	Name string
 	Desc string
 }
 
 /* 账单 */
 type Bill struct {
-	Id   int
-	name string
+	Id   int64
+	Name string
 }

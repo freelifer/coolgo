@@ -1,43 +1,48 @@
 package config
 
 import (
-	"fmt"
-	"github.com/astaxie/beego/config"
-	"github.com/freelifer/coolgo/utils"
-	"os"
-	"path/filepath"
+	"github.com/Unknwon/goconfig"
+	"strings"
 )
 
-var Config config.Configer
+var c *goconfig.ConfigFile
 
 func init() {
-	var err error
-	var AppPath string
-	if AppPath, err = filepath.Abs(filepath.Dir(os.Args[0])); err != nil {
-		panic(err)
-	}
-	workPath, err := os.Getwd()
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println("Current dir", workPath)
-	var appConfigPath = filepath.Join(workPath, "conf", "app.conf")
-	if !utils.FileExists(appConfigPath) {
-		appConfigPath = filepath.Join(AppPath, "conf", "app.conf")
-		if !utils.FileExists(appConfigPath) {
-			return
-		}
-	}
-	Config, err = config.NewConfig("ini", appConfigPath)
+	c, _ = goconfig.LoadConfigFile("conf/app.conf")
+}
 
-	if err != nil {
-		panic(err.Error())
+func MustValue(section, key string) string {
+	if c != nil {
+		return c.MustValue(section, key, "")
 	}
+	return ""
+}
+
+func MustBool(section, key string) bool {
+	if c != nil {
+		return c.MustBool(section, key, false)
+	}
+	return false
 }
 
 func String(key string) string {
-	if Config != nil {
-		return Config.String(key)
+	pos := strings.Index(key, "::")
+	if pos > -1 {
+		section := key[:pos]
+		next := key[pos+2:]
+		return MustValue(section, next)
 	}
+
 	return ""
+}
+
+func Bool(key string) bool {
+	pos := strings.Index(key, "::")
+	if pos > -1 {
+		section := key[:pos]
+		next := key[pos+2:]
+		return MustBool(section, next)
+	}
+
+	return false
 }
