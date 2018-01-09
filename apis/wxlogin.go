@@ -12,7 +12,7 @@ func WeiXinLogin(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"errcode": 40001,
-			"errmsg":  err,
+			"errmsg":  err.Error(),
 		})
 		return
 	}
