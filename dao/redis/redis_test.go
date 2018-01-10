@@ -16,7 +16,6 @@ func Test_NewRedisConn(t *testing.T) {
 
 func Test_Set(t *testing.T) {
 
-	NewRedisConn()
 	err := Set("key", "value")
 
 	if err != nil {

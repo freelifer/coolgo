@@ -28,7 +28,7 @@ func Test_string(t *testing.T) {
 	t.Log(r)
 }
 func Test_mustValue(t *testing.T) {
-	r := MustValue("app", "db")
+	r := MustValue("app", "db", "")
 
 	t.Log(r)
 }

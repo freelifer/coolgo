@@ -1,11 +1,8 @@
 package main
 
 import (
-	"github.com/freelifer/coolgo/config"
 	_ "github.com/freelifer/coolgo/dao/db"
-	"github.com/freelifer/coolgo/dao/redis"
-	"log"
-	"os"
+	_ "github.com/freelifer/coolgo/dao/redis"
 )
 
 // glide mirror set https://golang.org/x/mobile https://github.com/golang/mobile --vcs git
@@ -26,14 +23,6 @@ import (
 
 //go test -bench=WeiXinLogin github.com/freelifer/coolgo/service
 func main() {
-	redis_status := config.Bool("app::redis_status")
-	// redis init
-	err := redis.NewRedisConn(redis_status)
-	if err != nil {
-		log.Println("redis new err", err)
-		os.Exit(0)
-	}
-
 	r := initRouter()
 	r.Run() // listen and serve on 0.0.0.0:8080
 	// r.Run(":8000")
