@@ -2,7 +2,7 @@ package redis
 
 import (
 	"errors"
-	"github.com/freelifer/coolgo/config"
+	"github.com/freelifer/coolgo/pkg/config"
 	"github.com/garyburd/redigo/redis"
 	"time"
 )

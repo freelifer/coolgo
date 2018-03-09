@@ -1,8 +1,8 @@
 package main
 
 import (
-	_ "github.com/freelifer/coolgo/dao/db"
-	_ "github.com/freelifer/coolgo/dao/redis"
+	_ "github.com/freelifer/coolgo/models"
+	. "github.com/freelifer/coolgo/routers"
 )
 
 // glide mirror set https://golang.org/x/mobile https://github.com/golang/mobile --vcs git
@@ -19,11 +19,12 @@ import (
 // GOOS=windows GOARCH=amd64 go build -o coolgo_win github.com/freelifer/coolgo/*.go
 
 // GOOS=linux GOARCH=amd64 go build -o coolgo_linux *.go
-// GOOS=windows GOARCH=amd64 go build -o coolgo_win *.go
+// GOOS=windows GOARCH=386 go build -o coolgo_win *.go
 
 //go test -bench=WeiXinLogin github.com/freelifer/coolgo/service
 func main() {
-	r := initRouter()
+	r := InitRouter()
 	r.Run() // listen and serve on 0.0.0.0:8080
 	// r.Run(":8000")
+
 }
