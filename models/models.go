@@ -18,7 +18,7 @@ func init() {
 	// engine.Logger().SetLevel(core.LOG_DEBUG)
 	engine.ShowSQL(true)
 
-	engine.Sync2(new(User))
+	engine.Sync2(new(WxUser), new(Password), new(WxUserPassword))
 
 	status := config.Bool("app::redis_status")
 	if !status {

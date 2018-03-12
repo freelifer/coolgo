@@ -2,8 +2,10 @@ package apis
 
 import (
 	"github.com/freelifer/coolgo/app/service"
+	"github.com/freelifer/coolgo/models"
+	"github.com/freelifer/coolgo/pkg/redis"
+	"github.com/freelifer/coolgo/pkg/utils"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 func WeiXinLogin(c *gin.Context) {
@@ -11,18 +13,30 @@ func WeiXinLogin(c *gin.Context) {
 	wxData, err := service.WeiXinLogin(code)
 
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"errcode": 40001,
-			"errmsg":  err.Error(),
-		})
+		errorJSON(c, 40001, err.Error())
 		return
 	}
-	// openid 读取数据库
-	c.JSON(http.StatusOK, gin.H{
-		"errcode": 0,
-		"errmsg":  "",
-		"data": gin.H{
-			"sessionid": wxData.SessionKey,
-		},
+
+	wxUer, err := models.GetOrCreateWxUser(wxData.Openid)
+	if err != nil {
+		errorJSON(c, 40001, err.Error())
+		return
+	}
+
+	json, err := models.WxUserToJson(wxUer)
+	if err != nil {
+		errorJSON(c, 40001, err.Error())
+		return
+	}
+
+	sessionId := utils.NewSessionID()
+	e := redis.PutSession(sessionId, json)
+	if e != nil {
+		errorJSON(c, 40001, e.Error())
+		return
+	}
+
+	successJSON(c, gin.H{
+		"sessionid": sessionId,
 	})
 }

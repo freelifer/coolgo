@@ -1,5 +1,5 @@
-hash: c6fac7b02a21d66900954fa5cfc16020ac495104a731302139a73c6fc0081303
-updated: 2018-01-10T01:13:42.1851198+08:00
+hash: c4aad1f11e2c885ffb6137536d47f58f14a4458553b7fc11c1a0a9327f739da2
+updated: 2018-03-12T15:10:59.4566228+08:00
 imports:
 - name: github.com/bitly/go-simplejson
   version: aabad6e819789e569bd6aabf444c935aa9ba1e44
@@ -8,6 +8,8 @@ imports:
   subpackages:
   - internal
   - redis
+- name: github.com/gin-contrib/gzip
+  version: 4fbfcc6122759afed2efbc762c4c41164a403951
 - name: github.com/gin-contrib/sse
   version: 22d885f9ecc78bf4ee5d72b937e4bbcdc58e8cae
 - name: github.com/gin-gonic/gin

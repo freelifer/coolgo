@@ -22,9 +22,9 @@ import (
 // GOOS=windows GOARCH=386 go build -o coolgo_win *.go
 
 //go test -bench=WeiXinLogin github.com/freelifer/coolgo/service
+// go test -run='Test_GetWxUserPasswords' *.go -v
 func main() {
 	r := InitRouter()
 	r.Run() // listen and serve on 0.0.0.0:8080
 	// r.Run(":8000")
-
 }

@@ -2,11 +2,13 @@ package routers
 
 import (
 	. "github.com/freelifer/coolgo/app/apis"
+	// "github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
 )
 
 func InitRouter() *gin.Engine {
 	r := gin.Default()
+	// r.Use(gzip.Gzip(gzip.BestCompression))
 
 	r.GET("/", HelloWorld)
 	r.GET("/ping", Ping)
