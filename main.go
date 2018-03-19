@@ -20,6 +20,7 @@ import (
 
 // GOOS=linux GOARCH=amd64 go build -o coolgo_linux *.go
 // GOOS=windows GOARCH=386 go build -o coolgo_win *.go
+// GOOS=windows GOARCH=386 go build -ldflags "-s -w" -o coolgo_win.exe main.go
 
 //go test -bench=WeiXinLogin github.com/freelifer/coolgo/service
 // go test -run='Test_GetWxUserPasswords' *.go -v

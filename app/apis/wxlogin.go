@@ -13,26 +13,26 @@ func WeiXinLogin(c *gin.Context) {
 	wxData, err := service.WeiXinLogin(code)
 
 	if err != nil {
-		errorJSON(c, 40001, err.Error())
+		errorJSON(c, 40002, err.Error())
 		return
 	}
 
 	wxUer, err := models.GetOrCreateWxUser(wxData.Openid)
 	if err != nil {
-		errorJSON(c, 40001, err.Error())
+		errorJSON(c, 40002, err.Error())
 		return
 	}
 
 	json, err := models.WxUserToJson(wxUer)
 	if err != nil {
-		errorJSON(c, 40001, err.Error())
+		errorJSON(c, 40002, err.Error())
 		return
 	}
 
 	sessionId := utils.NewSessionID()
 	e := redis.PutSession(sessionId, json)
 	if e != nil {
-		errorJSON(c, 40001, e.Error())
+		errorJSON(c, 40002, e.Error())
 		return
 	}
 

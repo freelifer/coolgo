@@ -7,6 +7,7 @@ import (
 /* 密码 */
 type Password struct {
 	Id           int64
+	Icon         string
 	UserName     string
 	UserPassword string
 	Title        string
