@@ -14,6 +14,8 @@ func InitRouter() *gin.Engine {
 	r.GET("/ping", Ping)
 	r.GET("/WXLogin", WXLogin)
 
+	r.POST("/huobipro", Huobipro)
+
 	// release
 	r.GET("/wx/login", WeiXinLogin)
 
@@ -25,5 +27,10 @@ func InitRouter() *gin.Engine {
 		v1.GET("/tb/shop_get", TbkShopGet)
 	}
 
+	// backend api
+	{
+		v1.POST("/login", BackendLogin)
+		v1.GET("/signin", BackendSignin)
+	}
 	return r
 }

@@ -15,6 +15,7 @@ func HelloWorld(c *gin.Context) {
 }
 
 func Ping(c *gin.Context) {
+	c.Header("Access-Control-Allow-Origin", "*")
 	c.String(http.StatusOK, "Hello World!")
 }
 
