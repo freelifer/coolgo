@@ -2,9 +2,9 @@ package models
 
 import (
 	"github.com/freelifer/coolgo/pkg/config"
-	"github.com/freelifer/coolgo/pkg/dbs"
 	"github.com/freelifer/coolgo/pkg/redis"
 
+	"fmt"
 	"github.com/go-xorm/xorm"
 )
 
@@ -12,8 +12,7 @@ var engine *xorm.Engine
 
 func init() {
 
-	dbDriver := config.String("app::db")
-	engine = dbs.DbsInit(dbDriver)
+	engine = DbsInit()
 
 	// engine.Logger().SetLevel(core.LOG_DEBUG)
 	engine.ShowSQL(true)
@@ -30,4 +29,35 @@ func init() {
 	maxidle := config.DefaultInt("redis::maxidle", 1)
 	maxactive := config.DefaultInt("redis::maxactive", 10)
 	redis.RedisInit(REDIS_HOST, REDIS_DB, maxidle, maxactive)
+}
+
+func DbsInit() *xorm.Engine {
+	var engine *xorm.Engine
+
+	dbDriver := config.String("app::db")
+	if "mysql" == dbDriver {
+		dbuser := config.String("mysql::dbuser")
+		dbpwd := config.String("mysql::dbpwd")
+		dbname := config.String("mysql::dbname")
+
+		if dbuser == "" {
+			dbuser = "root"
+		}
+		if dbpwd == "" {
+			dbpwd = "root"
+		}
+		if dbname == "" {
+			dbname = "coolgo"
+		}
+		conn := fmt.Sprintf("%s:%s@/%s?charset=utf8", dbuser, dbpwd, dbname)
+		engine, _ = xorm.NewEngine("mysql", conn)
+	} else {
+		//sqlite3
+		dbname := config.String("sqlite3::dbname")
+		if dbname == "" {
+			dbname = "data.db"
+		}
+		engine, _ = xorm.NewEngine("sqlite3", dbname)
+	}
+	return engine
 }

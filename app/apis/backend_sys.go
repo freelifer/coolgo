@@ -18,10 +18,10 @@ func BackendLogin(c *gin.Context) {
 }
 
 func BackendSignin(c *gin.Context) {
-	if !checkAuth(c, "pig", "123456") {
-		c.JSON(401, "")
-		return
-	}
+	// if !checkAuth(c, "pig", "123456") {
+	// 	c.JSON(401, "")
+	// 	return
+	// }
 	menus, err := models.GetPermissionMenus()
 	if err != nil {
 		errorJSON(c, 40002, err.Error())

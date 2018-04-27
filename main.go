@@ -24,6 +24,8 @@ import (
 
 //go test -bench=WeiXinLogin github.com/freelifer/coolgo/service
 // go test -run='Test_GetWxUserPasswords' *.go -v
+
+// GOOS=windows GOARCH=386 go build -tags 'mysql' -o coolgo_win main.go
 func main() {
 	r := InitRouter()
 	r.Run() // listen and serve on 0.0.0.0:8080
